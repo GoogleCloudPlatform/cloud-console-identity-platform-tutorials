@@ -1,18 +1,17 @@
-# Configuring IAP with a Single Federated non-Google Provider Using FirebaseUI
+# Configuring IAP with Email/Password Authentication Using FirebaseUI
 
-This sample walks you through deploying an App Engine flexible environment
+This sample walks you through deploying an App Engine standard environment
 application and securing it with
 [Cloud Identity-Aware Proxy](https://cloud.google.com/iap/docs/external-identities)
 (Cloud IAP) external identities, powered by
 [Google Cloud Identity Platform](https://cloud.google.com/identity-platform/)
 (GCIP). This sample will also work for a GCE or GKE IAP resource.
 
-More specifically, this quickstart sample demonstrates using a federated provider
-like Facebook to sign in to an IAP gated resource (GAE app). The same flow can be
-applied for other federated providers (SAML, OIDC, OAuth, etc) with minimal
+More specifically, this sample demonstrates using email and password authentication to sign in to an IAP gated resource (GAE app). The same flow can be
+applied for federated providers (SAML, OIDC, OAuth, etc) with minimal
 adjustments to the code.
 
-This quickstart works for single project level IdP or single tenant level IdP.
+This sample works for single project level IdP or single tenant level IdP.
 
 ## Table of Contents
 
@@ -20,7 +19,7 @@ This quickstart works for single project level IdP or single tenant level IdP.
 2. [Prerequisite](#prerequisite)
 3. [Enable GCIP](#enable-gcip)
 4. [Deploy the authentication page](#deploy-the-authentication-page)
-5. [Deploy to App Engine Flexible Environment](#deploy-to-app-engine-flexible-environment)
+5. [Deploy to App Engine Standard Environment](#deploy-to-app-engine-flexible-environment)
 6. [Enable IAP](#enable-iap)
 7. [Test Access](#test-access)
 
@@ -36,11 +35,12 @@ Download the sample application source code and its dependencies with:
 
 ```bash
 git clone https://github.com/GoogleCloudPlatform/iap-gcip-web-toolkit.git
-cd iap-gcip-web-toolkit/sample/app
+cd identity_platform_samples/authui-firebaseui
 npm install
 ```
 
 ## Prerequisite
+
 Create your project in the [Cloud Console](https://console.cloud.google.com).
 
 You will need to create the GAE app, IAP and GCIP projects in the same Google
@@ -67,15 +67,8 @@ associated with the IAP resource.
 Note that it is not a requirement to have the same Firebase Hosting project
 as your GCIP project. It is only done here for convenience. Firebase Hosting
 is merely used as a static file hosting service here. However, if a different
-project is used, the Firebase hosting domain has to be whitelisted in the GCIP
+project is used, the Firebase hosting domain has to be allowed in the GCIP
 list of authorized domains.
-
-Install all dependencies for the sample `AuthUI` in `iap-gcip-web-toolkit` repo.
-
-```bash
-cd sample/authui-firebaseui
-npm install
-```
 
 (Optional) If you want to use a different provider (eg.
 [SAML](https://cloud.google.com/identity-platform/docs/how-to-enable-application-for-saml)
@@ -109,7 +102,7 @@ Select the project you have created in the prerequisite, and type in `default` o
 any other name as the alias to use for this project.
 
 To deploy the authentication UI to production, in the same directory
-`sample/authui-firebaseui`, run:
+`identity_platform_samples/authui-firebaseui`, run:
 
 ```bash
 npm run deploy
@@ -120,9 +113,9 @@ This will deploy the authentication UI to:
 
 You can use this URL as your authentication URL when configuring IAP.
 
-## Deploy to App Engine Flexible Environment
+## Deploy to App Engine Standard Environment
 
-Follow the instructions to [deploy your GAE application](../app/README.md).
+Follow the instructions to [deploy your GAE application](https://cloud.google.com/appengine/docs/standard/nodejs/quickstart#local-machine).
 
 ## Enable IAP
 
@@ -147,16 +140,10 @@ Follow the instructions to [deploy your GAE application](../app/README.md).
     address for unauthenticated requests to the current resource. This page needs
     to be configured to handle authentication. Follow the instructions above to
     configure that page.
-  - Facebook should already be configured for this GCIP project. Select the
-    project level Facebook IdP in the permissions section. If the IdP was
-    configured on a GCIP tenant, the corresponding tenant should be selected
-    instead from the list of tenants.
 - Click **SAVE** and you are now ready to use external identities with IAP.
 
 ## Test access
 
 - Go to `https://[YOUR_PROJECT_ID].appspot.com`. You should be redirected to
-  Facebook to sign in.
-- After sign-in, you should be redirected back to the original app and your
-  user's profile populated and displayed.
-- Click **Sign Out** link. You should be redirected back to Facebook to sign in.
+  email/password to sign in.
+- After sign-in, you should be redirected back to the original app.
